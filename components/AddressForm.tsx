@@ -1,10 +1,10 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import styles from '../styles/AddressForm.module.css'
+import { ChangeEvent, FormEvent, useState } from 'react';
+import styles from '../styles/AddressForm.module.css';
 
-function AddressForm(props: { handler: (address: string) => void }) {
+function AddressForm(props: { handler: (address?: string) => void }) {
 
-  const [values, setValues] = useState({
-    address: '',
+  const [values, setValues] = useState<{address?: string}>({
+    address: undefined,
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

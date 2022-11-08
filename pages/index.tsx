@@ -6,12 +6,17 @@ import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
   const [balance, setBalance] = useState(0)
-  const [address, setAddress] = useState('')
+  const [address, setAddress] = useState<string | undefined>(undefined)
 
-  const addressSubmittedHandler = (address: string) => {
+  const addressSubmittedHandler = (address: string | undefined = 'B1aLAAe4vW8nSQCetXnYqJfRxzTjnbooczwkUJAr7yMS') => {
     const key = new web3.PublicKey(address);
-    setAddress(address)
-    setBalance(1000)
+    setAddress(key.toBase58())
+
+    const connection = new web3.Connection(web3.clusterApiUrl('devnet'))
+    
+    connection.getBalance(key).then(balance => {
+      setBalance(balance / web3.LAMPORTS_PER_SOL)
+    })
   }
 
   return (
