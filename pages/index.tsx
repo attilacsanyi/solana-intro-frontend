@@ -9,14 +9,20 @@ const Home: NextPage = () => {
   const [address, setAddress] = useState<string | undefined>(undefined)
 
   const addressSubmittedHandler = (address: string | undefined = 'B1aLAAe4vW8nSQCetXnYqJfRxzTjnbooczwkUJAr7yMS') => {
-    const key = new web3.PublicKey(address);
-    setAddress(key.toBase58())
+    try {
+      const key = new web3.PublicKey(address);
+      setAddress(key.toBase58());
 
-    const connection = new web3.Connection(web3.clusterApiUrl('devnet'))
-    
-    connection.getBalance(key).then(balance => {
-      setBalance(balance / web3.LAMPORTS_PER_SOL)
-    })
+      const connection = new web3.Connection(web3.clusterApiUrl('devnet'))
+
+      connection.getBalance(key).then(balance => {
+        setBalance(balance / web3.LAMPORTS_PER_SOL)
+      })
+    } catch (error) {
+      setAddress('')
+      setBalance(0)
+      alert(error)
+    }
   }
 
   return (
